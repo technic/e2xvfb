@@ -70,7 +70,7 @@ RUN sudo ldconfig
 
 RUN sudo apt-get install -y xdotool
 
-COPY ../entrypoint.sh /opt
+COPY entrypoint.sh /opt
 EXPOSE 5900 80
 ENTRYPOINT ["/opt/entrypoint.sh"]
 CMD bash
