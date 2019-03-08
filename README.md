@@ -9,8 +9,12 @@ If you want to be able to connect to the image with vnc first start it with
 ```bash
 docker run --rm -p 5900:5900 --name enigma2_box technic93/e2xvfb x11vnc -forever
 ```
-When to start enigma2 in the container use
+Then to start enigma2 in the container use
 ```bash
 docker exec -e DISPLAY=:99 -e ENIGMA_DEBUG_LVL=5 enigma2_box sudo -E enigma2
+```
+Finally, to stop and remove the container use
+```bash
+docker stop enigma2_box
 ```
 We also support `RESOLUTION` environment variable for Xvfb.
