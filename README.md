@@ -1,4 +1,8 @@
 # e2xvfb Docker image
+
+![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/technic93/e2xvfb.svg)
+![Docker Pulls](https://img.shields.io/docker/pulls/technic93/e2xvfb.svg)
+
 Run enigma2 application via SDL under Xvfb xserver.
 
 If you want to be able to connect to the image with vnc first start it with
