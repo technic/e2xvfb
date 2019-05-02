@@ -69,6 +69,8 @@ RUN ldconfig
 RUN apt-get install -y xdotool
 
 COPY entrypoint.sh /opt
+RUN chmod 755 /opt/entrypoint.sh
+ENV DISPLAY=:99
 EXPOSE 5900 80
 ENTRYPOINT ["/opt/entrypoint.sh"]
 CMD bash
