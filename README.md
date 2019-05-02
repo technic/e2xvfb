@@ -11,7 +11,7 @@ docker run --rm -p 5900:5900 --name enigma2_box technic93/e2xvfb x11vnc -forever
 ```
 Then to start enigma2 in the container use
 ```bash
-docker exec -e ENIGMA_DEBUG_LVL=5 enigma2_box sudo -E enigma2
+docker exec -e ENIGMA_DEBUG_LVL=5 enigma2_box enigma2
 ```
 Finally, to stop and remove the container use
 ```bash
