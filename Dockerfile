@@ -56,7 +56,7 @@ RUN cd tuxtxt/tuxtxt \
  && make \
  && make install
 
-RUN git clone --depth 10 https://github.com/technic/enigma2.git
+RUN git clone --depth 10 https://github.com/technic/enigma2.git -b master-release-4
 RUN cd enigma2 \
  && ./autogen.sh \
  && ./configure --with-libsdl --with-gstversion=1.0 --prefix=/usr --sysconfdir=/etc \
