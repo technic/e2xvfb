@@ -1,9 +1,11 @@
 #!/bin/bash
+set -e
+
 # required directory for enigma2
-sudo mkdir -p /dev/input
+mkdir -p /dev/input
 
 # start web server
-sudo service apache2 start
+service apache2 start
 
 echo "start Xvfb"
 test -z "$RESOLUTION" && RESOLUTION="1280x720x16"
