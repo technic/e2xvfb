@@ -1,27 +1,20 @@
 FROM ubuntu:18.04
 
-RUN useradd -G video -m -s /bin/bash e2user
-RUN apt-get update && apt-get -y install sudo
-RUN adduser e2user sudo && echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
-
 # build requirements
-RUN apt-get install -y \
+RUN apt-get update && apt-get install -y \
   git build-essential autoconf autotools-dev libtool libtool-bin checkinstall unzip \
-  swig python-dev python-twisted \
+  swig python-dev python-pip python-twisted \
   libz-dev libssl-dev \
   libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libsigc++-2.0-dev \
-  libfreetype6-dev libsigc++-1.2-dev libfribidi-dev \
-  libavahi-client-dev libjpeg-dev libgif-dev libsdl2-dev
+  libfreetype6-dev libfribidi-dev \
+  libavahi-client-dev libjpeg-dev libgif-dev libsdl2-dev libxml2-dev
 
-RUN apt-get install -y libsdl1.2-dev
-
-# xserver
-RUN apt-get install -y x11vnc xvfb
-# web server
-RUN apt-get install -y apache2
+# xserver, web server
+ARG DEBIAN_FRONTEND=noninteractive
+RUN apt-get install -y x11vnc xvfb xdotool apache2
 
 # enigma2 wants python-wifi
-RUN apt-get -y install python-pip && pip install python-wifi
+RUN pip install python-wifi
 
 # opkg dependencies
 RUN apt-get install -y libarchive-dev libcurl4-openssl-dev libgpgme11-dev
@@ -56,7 +49,7 @@ RUN cd tuxtxt/tuxtxt \
  && make \
  && make install
 
-RUN git clone --depth 10 https://github.com/technic/enigma2.git -b master-release-4
+RUN git clone --depth 10 https://github.com/technic/enigma2.git
 RUN cd enigma2 \
  && ./autogen.sh \
  && ./configure --with-libsdl --with-gstversion=1.0 --prefix=/usr --sysconfdir=/etc \
@@ -66,7 +59,12 @@ RUN cd enigma2 \
 COPY enigma2-settings /etc/enigma2/settings
 RUN ldconfig
 
-RUN apt-get install -y xdotool
+RUN git clone --depth 10 https://github.com/technic/servicemp3.git
+RUN cd servicemp3 \
+ && ./autogen.sh \
+ && ./configure --with-gstversion=1.0 --prefix=/usr \
+ && make -j4 \
+ && make install
 
 COPY entrypoint.sh /opt
 RUN chmod 755 /opt/entrypoint.sh
