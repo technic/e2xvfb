@@ -1,8 +1,9 @@
 #!/bin/bash
 set -e
 
-# required directory for enigma2
+# required directory and files for enigma2
 mkdir -p /dev/input
+touch /dev/.udev
 
 # start web server
 service apache2 start

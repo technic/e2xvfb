@@ -6,6 +6,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y \
   git build-essential autoconf autotools-dev libtool libtool-bin unzip \
   swig python3-dev python3-pip python3-twisted \
+  python3-netifaces python3-usb python3-requests \
   libz-dev libssl-dev \
   libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libsigc++-2.0-dev \
   libfreetype6-dev libfribidi-dev \
@@ -15,6 +16,8 @@ RUN apt-get update && apt-get install -y \
 
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1 \
  && update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1
+
+RUN pip3 install wifi
 
 WORKDIR /work
 
@@ -55,6 +58,16 @@ RUN cd enigma2 \
 # disable startup wizards
 COPY enigma2-settings /etc/enigma2/settings
 RUN ldconfig
+
+RUN git clone --depth 10 https://github.com/oe-mirrors/branding-module.git
+RUN cd branding-module \
+ && autoreconf -i \
+ && ./configure --prefix=/usr \
+ && make \
+ && make install
+
+RUN git clone --depth 1 https://github.com/openatv/MetrixHD.git
+RUN cd MetrixHD && cp -arv usr /
 
 COPY entrypoint.sh /opt
 RUN chmod 755 /opt/entrypoint.sh
