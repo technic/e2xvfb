@@ -1,27 +1,24 @@
-FROM ubuntu:18.04
+FROM ubuntu:20.04
+
+ARG DEBIAN_FRONTEND=noninteractive
 
 # build requirements
 RUN apt-get update && apt-get install -y \
-  git build-essential autoconf autotools-dev libtool libtool-bin checkinstall unzip \
-  swig python-dev python-pip python-twisted \
+  git build-essential autoconf autotools-dev libtool libtool-bin unzip \
+  swig python3-dev python3-pip python3-twisted \
   libz-dev libssl-dev \
   libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libsigc++-2.0-dev \
   libfreetype6-dev libfribidi-dev \
-  libavahi-client-dev libjpeg-dev libgif-dev libsdl2-dev libxml2-dev
+  libavahi-client-dev libjpeg-dev libgif-dev libsdl2-dev libxml2-dev \
+  libarchive-dev libcurl4-openssl-dev libgpgme11-dev \
+  x11vnc xvfb xdotool
 
-# xserver, web server
-ARG DEBIAN_FRONTEND=noninteractive
-RUN apt-get install -y x11vnc xvfb xdotool apache2
-
-# enigma2 wants python-wifi
-RUN pip install python-wifi
-
-# opkg dependencies
-RUN apt-get install -y libarchive-dev libcurl4-openssl-dev libgpgme11-dev
+RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1 \
+ && update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1
 
 WORKDIR /work
 
-ARG OPKG_VER="0.3.5"
+ARG OPKG_VER="0.4.5"
 RUN curl "http://git.yoctoproject.org/cgit/cgit.cgi/opkg/snapshot/opkg-$OPKG_VER.tar.gz" -o opkg.tar.gz
 RUN tar -xzf opkg.tar.gz \
  && cd "opkg-$OPKG_VER" \
@@ -49,7 +46,7 @@ RUN cd tuxtxt/tuxtxt \
  && make \
  && make install
 
-RUN git clone --depth 10 https://github.com/technic/enigma2.git
+RUN git clone --depth 10 https://github.com/technic/enigma2-atv.git enigma2
 RUN cd enigma2 \
  && ./autogen.sh \
  && ./configure --with-libsdl --with-gstversion=1.0 --prefix=/usr --sysconfdir=/etc \
@@ -58,14 +55,6 @@ RUN cd enigma2 \
 # disable startup wizards
 COPY enigma2-settings /etc/enigma2/settings
 RUN ldconfig
-
-RUN git clone --depth 10 https://github.com/technic/servicemp3.git \
- && cd servicemp3 && git checkout 925d1a4732437049ba7ba37557dea37de830177c
-RUN cd servicemp3 \
- && ./autogen.sh \
- && ./configure --with-gstversion=1.0 --prefix=/usr \
- && make -j4 \
- && make install
 
 COPY entrypoint.sh /opt
 RUN chmod 755 /opt/entrypoint.sh
