@@ -49,7 +49,9 @@ RUN cd tuxtxt/tuxtxt \
  && make \
  && make install
 
-RUN git clone --depth 10 https://github.com/technic/enigma2-atv.git enigma2
+RUN mkdir enigma2 \
+ && curl -L https://github.com/technic/enigma2-atv/tarball/2d703ba6befd9648267272f9d7b794a5ae87c692 \
+  | tar -C enigma2 --strip 1 -xzf -
 RUN cd enigma2 \
  && ./autogen.sh \
  && ./configure --with-libsdl --with-gstversion=1.0 --prefix=/usr --sysconfdir=/etc \
