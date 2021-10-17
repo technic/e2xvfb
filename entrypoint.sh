@@ -6,7 +6,7 @@ mkdir -p /dev/input
 touch /dev/.udev
 
 # start web server
-service apache2 start
+service nginx start
 
 echo "start Xvfb"
 test -z "$RESOLUTION" && RESOLUTION="1280x720x16"

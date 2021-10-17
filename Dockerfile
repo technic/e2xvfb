@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y \
   libfreetype6-dev libfribidi-dev \
   libavahi-client-dev libjpeg-dev libgif-dev libsdl2-dev libxml2-dev \
   libarchive-dev libcurl4-openssl-dev libgpgme11-dev \
-  x11vnc xvfb xdotool
+  x11vnc xvfb xdotool nginx
 
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1 \
  && update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1
