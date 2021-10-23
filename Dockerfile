@@ -50,7 +50,7 @@ RUN cd tuxtxt/tuxtxt \
  && make install
 
 RUN mkdir enigma2 \
- && curl -L https://github.com/technic/enigma2-atv/tarball/2d703ba6befd9648267272f9d7b794a5ae87c692 \
+ && curl -L https://github.com/technic/enigma2-atv/tarball/5c027455d493a77e0d22c2c373e762f623123818 \
   | tar -C enigma2 --strip 1 -xzf -
 RUN cd enigma2 \
  && ./autogen.sh \
@@ -64,12 +64,12 @@ RUN ldconfig
 RUN git clone --depth 10 https://github.com/oe-mirrors/branding-module.git
 RUN cd branding-module \
  && autoreconf -i \
- && ./configure --prefix=/usr \
+ && ./configure --prefix=/usr --with-imageversion="7.0" \
  && make \
  && make install
 
-RUN git clone --depth 1 https://github.com/openatv/MetrixHD.git
-RUN cd MetrixHD && cp -arv usr /
+RUN git clone --depth 1 https://github.com/openatv/MetrixHD.git -b dev
+RUN cd MetrixHD && cp -arv usr / && rm -r /usr/lib/enigma2/python/Plugins/Extensions/MyMetrixLite
 
 COPY entrypoint.sh /opt
 RUN chmod 755 /opt/entrypoint.sh
