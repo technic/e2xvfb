@@ -1,6 +1,6 @@
 # e2xvfb Docker image
 
-[![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/technic93/e2xvfb.svg)](https://hub.docker.com/r/technic93/e2xvfb/builds)
+[![Docker Build Status](https://github.com/technic/e2xvfb/actions/workflows/docker-image.yml/badge.svg)](https://github.com/technic/e2xvfb/actions/workflows/docker-image.yml)
 [![Docker Pulls](https://img.shields.io/docker/pulls/technic93/e2xvfb.svg)](https://hub.docker.com/r/technic93/e2xvfb)
 
 Run enigma2 application via SDL under Xvfb xserver.
