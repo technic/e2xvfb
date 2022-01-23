@@ -22,7 +22,7 @@ RUN apt-get install -y libarchive-dev libcurl4-openssl-dev libgpgme11-dev
 WORKDIR /work
 
 ARG OPKG_VER="0.4.5"
-RUN curl "http://git.yoctoproject.org/cgit/cgit.cgi/opkg/snapshot/opkg-$OPKG_VER.tar.gz" -o opkg.tar.gz
+RUN curl -L "http://git.yoctoproject.org/cgit/cgit.cgi/opkg/snapshot/opkg-$OPKG_VER.tar.gz" -o opkg.tar.gz
 RUN tar -xzf opkg.tar.gz \
  && cd "opkg-$OPKG_VER" \
  && ./autogen.sh \
