@@ -30,14 +30,14 @@ RUN tar -xzf opkg.tar.gz \
  && make \
  && make install
 
-RUN git clone --depth 10 git://git.opendreambox.org/git/obi/libdvbsi++.git
-RUN cd libdvbsi++ \
+RUN git clone --depth 10 https://github.com/mtdcr/libdvbsi.git
+RUN cd libdvbsi \
  && ./autogen.sh \
  && ./configure \
  && make \
  && make install
 
-RUN git clone --depth 10 git://github.com/OpenPLi/tuxtxt.git
+RUN git clone --depth 10 https://github.com/OpenPLi/tuxtxt.git
 RUN cd tuxtxt/libtuxtxt \
  && autoreconf -i \
  && CPP="gcc -E -P" ./configure --with-boxtype=generic --prefix=/usr \
@@ -50,7 +50,7 @@ RUN cd tuxtxt/tuxtxt \
  && make install
 
 RUN mkdir enigma2 \
- && curl -L https://github.com/technic/enigma2-atv/tarball/5c027455d493a77e0d22c2c373e762f623123818 \
+ && curl -L https://github.com/technic/enigma2-atv/tarball/7f563b5e76586a01cf06508af1120b50bf391afe \
   | tar -C enigma2 --strip 1 -xzf -
 RUN cd enigma2 \
  && ./autogen.sh \
@@ -64,12 +64,16 @@ RUN ldconfig
 RUN git clone --depth 10 https://github.com/oe-mirrors/branding-module.git
 RUN cd branding-module \
  && autoreconf -i \
- && ./configure --prefix=/usr --with-imageversion="7.0" \
+ && ./configure --prefix=/usr --with-imageversion="7.2" \
  && make \
  && make install
 
-RUN git clone --depth 1 https://github.com/openatv/MetrixHD.git -b dev
+RUN git clone --depth 1 https://github.com/openatv/MetrixHD.git -b 7.1
 RUN cd MetrixHD && cp -arv usr / && rm -r /usr/lib/enigma2/python/Plugins/Extensions/MyMetrixLite
+
+RUN apt-get install -y software-properties-common \
+ && add-apt-repository ppa:deadsnakes/ppa \
+ && apt-get install -y python3.11 python3.11-venv
 
 COPY entrypoint.sh /opt
 RUN chmod 755 /opt/entrypoint.sh
